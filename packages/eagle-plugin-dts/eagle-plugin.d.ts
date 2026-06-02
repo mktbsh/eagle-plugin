@@ -13,6 +13,7 @@ declare global {
   namespace Eagle {
     export interface PluginAPI {
       readonly app: App;
+      readonly os: OS;
     }
 
     type RequestablePath =
@@ -123,6 +124,40 @@ declare global {
        * @description Brings the Eagle main application window to the front and displays it on top
        */
       show(): Promise<boolean>;
+    }
+
+    /**
+     * @description Similar to the os module in Node.js, provides some basic system operation functions.
+     */
+    export interface OS {
+      /**
+       * @description the default temporary file path of the operating system
+       */
+      tmpdir(): string;
+      /**
+       * @description the string of the operating system kernel version
+       */
+      version(): string;
+      /**
+       * @description the name of the operating system
+       */
+      type(): string;
+      /**
+       * @description the release version of the operating system
+       */
+      release(): string;
+      /**
+       * @description the hostname of the operating system
+       */
+      hostname(): string;
+      /**
+       * @description the home directory of the current user
+       */
+      homedir(): string;
+      /**
+       * @description the CPU architecture of the operating system
+       */
+      arch(): string;
     }
 
     export interface Size {

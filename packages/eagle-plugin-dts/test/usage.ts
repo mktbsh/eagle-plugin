@@ -1,3 +1,3 @@
 /// <reference types="../eagle-plugin" />
 
-const version: string = eagle.app.version;
+const _version: string = eagle.app.version;
