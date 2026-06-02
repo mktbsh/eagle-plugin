@@ -7,8 +7,5 @@
     "moduleResolution": "Bundler",
     "skipLibCheck": false
   },
-  "include": [
-    "eagle-plugin.d.ts",
-    "test/**/*.ts"
-  ]
+  "include": ["eagle-plugin.d.ts", "test/**/*.ts"]
 }

@@ -2,6 +2,10 @@
   "biome.enabled": true,
   "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "github.copilot.chat.commitMessageGeneration.instructions": [
     { "text": "Follow Conventional Commits: type(scope): description." },
     { "text": "Use lowercase type and scope." },
