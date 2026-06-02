@@ -14,6 +14,7 @@ declare global {
     export interface PluginAPI {
       readonly app: App;
       readonly os: OS;
+      readonly log: Logger;
     }
 
     type RequestablePath =
@@ -158,6 +159,13 @@ declare global {
        * @description the CPU architecture of the operating system
        */
       arch(): string;
+    }
+
+    export interface Logger {
+      debug(obj: object): void;
+      info(obj: object): void;
+      warn(obj: object): void;
+      error(obj: object): void;
     }
 
     export interface Size {
