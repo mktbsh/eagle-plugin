@@ -14,6 +14,7 @@ declare global {
     export interface PluginAPI {
       readonly app: App;
       readonly os: OS;
+      readonly shell: Shell;
       readonly log: Logger;
     }
 
@@ -166,6 +167,26 @@ declare global {
       info(obj: object): void;
       warn(obj: object): void;
       error(obj: object): void;
+    }
+
+    export interface Shell {
+      /**
+       * @description Plays the system's beep sound.
+       */
+      beep(): Promise<void>;
+      /**
+       * @description Opens the specified URL using the system's default method. Note: This function will not have any effect if there is no default application set by the system.
+       * @param url The URL to be opened
+       */
+      openExternal(url: string): Promise<void>;
+      /**
+       * @description Opens the specified path using the system's default method.
+       */
+      openPath(path: string): Promise<void>;
+      /**
+       * @description Shows the specified file or folder in the file manager
+       */
+      showItemInFolder(path: string): Promise<void>;
     }
 
     export interface Size {
