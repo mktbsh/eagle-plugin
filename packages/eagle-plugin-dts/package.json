@@ -1,0 +1,37 @@
+{
+  "name": "eagle-plugin-dts",
+  "version": "0.0.1",
+  "description": "",
+  "types": "./eagle-plugin.d.ts",
+  "files": [
+    "eagle-plugin.d.ts",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "test": "pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
+    "pack:dry": "pnpm pack --dry-run"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "keywords": [
+    "eagle-app",
+    "eagle-plugin",
+    "typescript",
+    "type definitions"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mktbsh/eagle-plugin.git",
+    "directory": "packages/eagle-plugin-dts"
+  },
+  "author": {
+    "name": "mktbsh",
+    "url": "https://github.com/mktbsh"
+  },
+  "license": "MIT",
+  "type": "module"
+}
