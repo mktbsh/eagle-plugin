@@ -1,0 +1,27 @@
+{
+  "name": "eagle-plugin",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mktbsh/eagle-plugin.git"
+  },
+  "author": {
+    "name": "mktbsh",
+    "url": "https://github.com/mktbsh"
+  },
+  "description": "eagle plugin monorepo",
+  "type": "module",
+  "scripts": {},
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.3.0",
+      "onFail": "download"
+    }
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "version": ""
+}
