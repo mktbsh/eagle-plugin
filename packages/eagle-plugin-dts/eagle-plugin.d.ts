@@ -1,3 +1,5 @@
+import type { Buffer } from "node:buffer";
+
 /**
  * Type definitions for Eagle Plugin API.
  *
@@ -9,11 +11,26 @@ declare global {
   const eagle: Eagle.PluginAPI;
 
   namespace Eagle {
-    interface PluginAPI {
+    export interface PluginAPI {
       readonly app: App;
     }
 
-    interface App {
+    type RequestablePath =
+      | "home"
+      | "appData"
+      | "userData"
+      | "temp"
+      | "exe"
+      | "desktop"
+      | "documents"
+      | "downloads"
+      | "music"
+      | "pictures"
+      | "videos"
+      | "recent"
+      | (string & {});
+
+    export interface App {
       /**
        * @description the current Eagle application version
        */
@@ -70,8 +87,56 @@ declare global {
        * @description the path to the current user data directory
        */
       userDataPath: string;
+
+      /**
+       * @description Check if the current system is in dark (Dark) mode
+       * @returns {boolean} Whether the current system is in Dark mode
+       */
+      isDarkColors(): boolean;
+
+      /**
+       * @description You can request the following paths by name
+       * @param {RequestablePath} name
+       */
+      getPath(name: RequestablePath): Promise<string>;
+
+      /**
+       * @description Get the icon associated with the specified path file
+       * @param path File path for which you want to get the icon
+       */
+      getFileIcon(
+        path: string,
+        options?: { size: "small" | "normal" | "large" },
+      ): Promise<NativeImageLike>;
+
+      /**
+       * @description Get the icon associated with the file at the specified path
+       * @param path The file path to get the thumbnail from
+       * @param maxSize The maximum width and height (positive number) of the returned thumbnail
+       */
+      createThumbnailFromPath(
+        path: string,
+        maxSize: Size,
+      ): Promise<NativeImageLike>;
+
+      /**
+       * @description Brings the Eagle main application window to the front and displays it on top
+       */
+      show(): Promise<boolean>;
+    }
+
+    export interface Size {
+      width: number;
+      height: number;
+    }
+
+    export interface NativeImageLike {
+      toPNG(options?: { scaleFactor?: number }): Promise<Buffer>;
+      toJPEG(options?: { quality?: number }): Promise<Buffer>;
+      toBitmap(options?: { scaleFactor?: number }): Promise<Buffer>;
+      toDataURL(options?: { scaleFactor?: number }): Promise<string>;
+      isEmpty(): boolean;
+      getSize(scaleFactor?: number): Size;
     }
   }
 }
-
-export {};
