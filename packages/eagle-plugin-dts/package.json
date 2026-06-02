@@ -15,7 +15,11 @@
     "pack:dry": "pnpm pack --dry-run"
   },
   "devDependencies": {
+    "@types/node": "^24.12.4",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@types/node": ">=24"
   },
   "keywords": [
     "eagle-app",
