@@ -12,8 +12,22 @@ declare global {
 
   namespace Eagle {
     export interface PluginAPI {
+      readonly event: unknown;
+      readonly item: unknown;
+      readonly folder: unknown;
+      readonly smartFolder: unknown;
+      readonly tag: unknown;
+      readonly tagGroup: unknown;
+      readonly library: unknown;
+      readonly window: unknown;
       readonly app: App;
       readonly os: OS;
+      readonly screen: Screen;
+      readonly notification: unknown;
+      readonly contextMenu: unknown;
+      readonly dialog: unknown;
+      readonly clipboard: Clipboard;
+      readonly drag: Drag;
       readonly shell: Shell;
       readonly log: Logger;
     }
@@ -194,6 +208,20 @@ declare global {
       getPrimaryDisplay(): Promise<DisplayLike>;
       getAllDisplays(): Promise<DisplayLike[]>;
       getDisplayNearestPoint(point: Point): Promise<DisplayLike>;
+    }
+
+    export interface Clipboard {
+      clear(): void;
+      has(format: string): boolean;
+      writeText(text: string): void;
+      readText(): string;
+      writeBuffer(format: string, buffer: Buffer): void;
+      readBuffer(format: string): Buffer;
+      writeImage(image: NativeImageLike): void;
+      readImage(): NativeImageLike;
+      writeHTML(html: string): void;
+      readHTML(): string;
+      copyFiles(paths: string[]): void;
     }
 
     export interface Drag {
