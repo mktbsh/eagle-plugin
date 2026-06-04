@@ -189,9 +189,29 @@ declare global {
       showItemInFolder(path: string): Promise<void>;
     }
 
+    export interface Screen {
+      getCursorScreenPoint(): Promise<Point>;
+      getPrimaryDisplay(): Promise<DisplayLike>;
+      getAllDisplays(): Promise<DisplayLike[]>;
+      getDisplayNearestPoint(point: Point): Promise<DisplayLike>;
+    }
+
+    export interface Drag {
+      /**
+       * @param filePaths
+       * @see {@link https://www.electronjs.org/ja/docs/latest/api/web-contents#contentsstartdragitem}
+       */
+      startDrag(filePaths: string[]): Promise<void>;
+    }
+
     export interface Size {
       width: number;
       height: number;
+    }
+
+    export interface Point {
+      x: number;
+      y: number;
     }
 
     export interface NativeImageLike {
@@ -201,6 +221,29 @@ declare global {
       toDataURL(options?: { scaleFactor?: number }): Promise<string>;
       isEmpty(): boolean;
       getSize(scaleFactor?: number): Size;
+    }
+
+    // TODO: https://www.electronjs.org/docs/latest/api/structures/display
+    export interface DisplayLike {
+      accelerometerSupport: "available" | "unavailable" | "unknown";
+      bounds: Point & Size;
+      colorDepth: number;
+      colorSpace: string;
+      depthPerComponent: number;
+      detected: boolean;
+      displayFrequency: number;
+      id: number;
+      internal: boolean;
+      label: string;
+      maximumCursorSize: Size;
+      monochrome: boolean;
+      nativeOrigin: Point;
+      rotation: number;
+      scaleFactor: number;
+      size: Size;
+      touchSupport: "available" | "unavailable" | "unknown";
+      workArea: Point & Size;
+      workAreaSize: Size;
     }
   }
 }
