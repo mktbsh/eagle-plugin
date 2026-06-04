@@ -25,7 +25,7 @@ declare global {
       readonly screen: Screen;
       readonly notification: unknown;
       readonly contextMenu: unknown;
-      readonly dialog: unknown;
+      readonly dialog: Dialog;
       readonly clipboard: Clipboard;
       readonly drag: Drag;
       readonly shell: Shell;
@@ -208,6 +208,49 @@ declare global {
       getPrimaryDisplay(): Promise<DisplayLike>;
       getAllDisplays(): Promise<DisplayLike[]>;
       getDisplayNearestPoint(point: Point): Promise<DisplayLike>;
+    }
+
+    export interface Dialog {
+      showOpenDialog(options: ShowOpenDialogOptions): Promise<DialogResult>;
+      showSaveDialog(options: ShowSaveDialogOptions): Promise<DialogResult>;
+      showMessageBox(options: {
+        message: string;
+        title?: string;
+        detail?: string;
+        type?: "none" | "info" | "error" | "question" | "warning";
+        buttons?: string[];
+      }): Promise<{ response: number }>;
+      showErrorBox(title: string, content: string): Promise<void>;
+    }
+
+    export interface DialogResult {
+      canceled: boolean;
+      filePaths: string[];
+    }
+
+    export interface DialogOptionsBase {
+      title?: string;
+      defaultPath?: string;
+      buttonLabel?: string;
+      filters?: Array<{ name: string; extensions: string[] }>;
+    }
+
+    export interface ShowOpenDialogOptions {
+      properties?: Array<
+        | "openFile"
+        | "openDirectory"
+        | "multiSelections"
+        | "showHiddenFiles"
+        | "createDirectory"
+        | "promptToCreate"
+      >;
+      message?: string;
+    }
+
+    export interface ShowSaveDialogOptions extends DialogOptionsBase {
+      properties?: Array<
+        "openDirectory" | "showHiddenFiles" | "createDirectory"
+      >;
     }
 
     export interface Clipboard {
