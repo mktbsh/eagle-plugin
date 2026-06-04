@@ -18,7 +18,7 @@ declare global {
       readonly smartFolder: unknown;
       readonly tag: unknown;
       readonly tagGroup: unknown;
-      readonly library: unknown;
+      readonly library: Library;
       readonly window: unknown;
       readonly app: App;
       readonly os: OS;
@@ -46,6 +46,13 @@ declare global {
       | "videos"
       | "recent"
       | (string & {});
+
+    export interface Library {
+      info(): Promise<unknown>;
+      readonly name: string;
+      readonly path: string;
+      readonly modificationTime: number;
+    }
 
     export interface App {
       /**
