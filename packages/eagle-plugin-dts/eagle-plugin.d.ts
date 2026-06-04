@@ -23,8 +23,8 @@ declare global {
       readonly app: App;
       readonly os: OS;
       readonly screen: Screen;
-      readonly notification: unknown;
-      readonly contextMenu: unknown;
+      readonly notification: Notification;
+      readonly contextMenu: ContextMenu;
       readonly dialog: Dialog;
       readonly clipboard: Clipboard;
       readonly drag: Drag;
@@ -208,6 +208,37 @@ declare global {
       getPrimaryDisplay(): Promise<DisplayLike>;
       getAllDisplays(): Promise<DisplayLike[]>;
       getDisplayNearestPoint(point: Point): Promise<DisplayLike>;
+    }
+
+    export interface Notification {
+      show(options: {
+        title: string;
+        body: string;
+        /**
+         * @description URL/base64 string
+         */
+        icon?: string;
+        mute?: boolean;
+        /**
+         * @description milliseconds
+         */
+        duration?: number;
+      }): Promise<void>;
+    }
+
+    export interface ContextMenu {
+      open(menuItems: MenuItemLike[]): void;
+    }
+
+    export interface MenuItemLike {
+      id: string;
+      label: string;
+      submenu?: MenuItemLike[];
+      click?: (
+        menuItem: MenuItemLike,
+        window: unknown,
+        event: KeyboardEvent,
+      ) => void;
     }
 
     export interface Dialog {
