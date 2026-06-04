@@ -12,8 +12,22 @@ declare global {
 
   namespace Eagle {
     export interface PluginAPI {
+      readonly event: unknown;
+      readonly item: unknown;
+      readonly folder: unknown;
+      readonly smartFolder: unknown;
+      readonly tag: unknown;
+      readonly tagGroup: unknown;
+      readonly library: unknown;
+      readonly window: unknown;
       readonly app: App;
       readonly os: OS;
+      readonly screen: Screen;
+      readonly notification: unknown;
+      readonly contextMenu: unknown;
+      readonly dialog: unknown;
+      readonly clipboard: Clipboard;
+      readonly drag: Drag;
       readonly shell: Shell;
       readonly log: Logger;
     }
@@ -189,9 +203,43 @@ declare global {
       showItemInFolder(path: string): Promise<void>;
     }
 
+    export interface Screen {
+      getCursorScreenPoint(): Promise<Point>;
+      getPrimaryDisplay(): Promise<DisplayLike>;
+      getAllDisplays(): Promise<DisplayLike[]>;
+      getDisplayNearestPoint(point: Point): Promise<DisplayLike>;
+    }
+
+    export interface Clipboard {
+      clear(): void;
+      has(format: string): boolean;
+      writeText(text: string): void;
+      readText(): string;
+      writeBuffer(format: string, buffer: Buffer): void;
+      readBuffer(format: string): Buffer;
+      writeImage(image: NativeImageLike): void;
+      readImage(): NativeImageLike;
+      writeHTML(html: string): void;
+      readHTML(): string;
+      copyFiles(paths: string[]): void;
+    }
+
+    export interface Drag {
+      /**
+       * @param filePaths
+       * @see {@link https://www.electronjs.org/ja/docs/latest/api/web-contents#contentsstartdragitem}
+       */
+      startDrag(filePaths: string[]): Promise<void>;
+    }
+
     export interface Size {
       width: number;
       height: number;
+    }
+
+    export interface Point {
+      x: number;
+      y: number;
     }
 
     export interface NativeImageLike {
@@ -201,6 +249,29 @@ declare global {
       toDataURL(options?: { scaleFactor?: number }): Promise<string>;
       isEmpty(): boolean;
       getSize(scaleFactor?: number): Size;
+    }
+
+    // TODO: https://www.electronjs.org/docs/latest/api/structures/display
+    export interface DisplayLike {
+      accelerometerSupport: "available" | "unavailable" | "unknown";
+      bounds: Point & Size;
+      colorDepth: number;
+      colorSpace: string;
+      depthPerComponent: number;
+      detected: boolean;
+      displayFrequency: number;
+      id: number;
+      internal: boolean;
+      label: string;
+      maximumCursorSize: Size;
+      monochrome: boolean;
+      nativeOrigin: Point;
+      rotation: number;
+      scaleFactor: number;
+      size: Size;
+      touchSupport: "available" | "unavailable" | "unknown";
+      workArea: Point & Size;
+      workAreaSize: Size;
     }
   }
 }
