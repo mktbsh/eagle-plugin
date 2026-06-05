@@ -12,24 +12,24 @@ declare global {
 
   namespace Eagle {
     export interface PluginAPI {
-      readonly event: unknown;
+      readonly event: EventAPI;
       readonly item: unknown;
       readonly folder: unknown;
       readonly smartFolder: unknown;
-      readonly tag: unknown;
-      readonly tagGroup: unknown;
-      readonly library: Library;
+      readonly tag: TagAPI;
+      readonly tagGroup: TagGroupAPI;
+      readonly library: LibraryAPI;
       readonly window: unknown;
-      readonly app: App;
-      readonly os: OS;
-      readonly screen: Screen;
-      readonly notification: Notification;
-      readonly contextMenu: ContextMenu;
-      readonly dialog: Dialog;
-      readonly clipboard: Clipboard;
-      readonly drag: Drag;
-      readonly shell: Shell;
-      readonly log: Logger;
+      readonly app: AppAPI;
+      readonly os: OSAPI;
+      readonly screen: ScreenAPI;
+      readonly notification: NotificationAPI;
+      readonly contextMenu: ContextMenuAPI;
+      readonly dialog: DialogAPI;
+      readonly clipboard: ClipboardAPI;
+      readonly drag: DragAPI;
+      readonly shell: ShellAPI;
+      readonly log: LoggerAPI;
     }
 
     type RequestablePath =
@@ -47,14 +47,74 @@ declare global {
       | "recent"
       | (string & {});
 
-    export interface Library {
+    type PluginCreateCallback = (plugin: {
+      manifest: ManifestJSON;
+      path: string;
+    }) => void;
+
+    type LibraryChangedCallback = (libraryPath: string) => void;
+    type ThemeChangedCallback = (theme: string) => void;
+
+    export interface EventAPI {
+      onPluginCreate(callback: PluginCreateCallback): void;
+      onPluginRun(callback: VoidFunction): void;
+      onPluginBeforeExit(callback: VoidFunction): void;
+      onPluginShow(callback: VoidFunction): void;
+      onPluginHide(callback: VoidFunction): void;
+      onLibraryChanged(callback: LibraryChangedCallback): void;
+      onThemeChanged(callback: ThemeChangedCallback): void;
+    }
+
+    export interface TagAPI {
+      get(options?: { name?: string }): Promise<Tag[]>;
+      getRecentTags(): Promise<Tag[]>;
+      getStarredTags(): Promise<Tag[]>;
+      merge(options: {
+        source: string;
+        target: string;
+      }): Promise<{ affectedItems: number; sourceRemoved: boolean }>;
+    }
+
+    export interface Tag {
+      name: string;
+      readonly count: number;
+      color: string;
+      readonly groups: string[];
+      readonly pinyin: string;
+      save(): Promise<boolean>;
+    }
+
+    export interface TagGroupAPI {
+      get(): Promise<TagGroup[]>;
+      create(options: TagGroup): Promise<TagGroup>;
+    }
+
+    export interface TagGroup {
+      name: string;
+      color: string;
+      tags: string[];
+      description: string;
+      save(): Promise<TagGroup>;
+      remove(): Promise<boolean>;
+      addTags(options: {
+        tags: string[];
+        /**
+         * @description false: Only add tags, true: Move tags
+         * @default false
+         */
+        removeFromSource?: boolean;
+      }): Promise<TagGroup>;
+      removeTags(options: { tags: string[] }): Promise<TagGroup>;
+    }
+
+    export interface LibraryAPI {
       info(): Promise<unknown>;
       readonly name: string;
       readonly path: string;
       readonly modificationTime: number;
     }
 
-    export interface App {
+    export interface AppAPI {
       /**
        * @description the current Eagle application version
        */
@@ -152,7 +212,7 @@ declare global {
     /**
      * @description Similar to the os module in Node.js, provides some basic system operation functions.
      */
-    export interface OS {
+    export interface OSAPI {
       /**
        * @description the default temporary file path of the operating system
        */
@@ -183,14 +243,14 @@ declare global {
       arch(): string;
     }
 
-    export interface Logger {
+    export interface LoggerAPI {
       debug(obj: object): void;
       info(obj: object): void;
       warn(obj: object): void;
       error(obj: object): void;
     }
 
-    export interface Shell {
+    export interface ShellAPI {
       /**
        * @description Plays the system's beep sound.
        */
@@ -210,14 +270,14 @@ declare global {
       showItemInFolder(path: string): Promise<void>;
     }
 
-    export interface Screen {
+    export interface ScreenAPI {
       getCursorScreenPoint(): Promise<Point>;
       getPrimaryDisplay(): Promise<DisplayLike>;
       getAllDisplays(): Promise<DisplayLike[]>;
       getDisplayNearestPoint(point: Point): Promise<DisplayLike>;
     }
 
-    export interface Notification {
+    export interface NotificationAPI {
       show(options: {
         title: string;
         body: string;
@@ -233,7 +293,7 @@ declare global {
       }): Promise<void>;
     }
 
-    export interface ContextMenu {
+    export interface ContextMenuAPI {
       open(menuItems: MenuItemLike[]): void;
     }
 
@@ -248,7 +308,7 @@ declare global {
       ) => void;
     }
 
-    export interface Dialog {
+    export interface DialogAPI {
       showOpenDialog(options: ShowOpenDialogOptions): Promise<DialogResult>;
       showSaveDialog(options: ShowSaveDialogOptions): Promise<DialogResult>;
       showMessageBox(options: {
@@ -291,7 +351,7 @@ declare global {
       >;
     }
 
-    export interface Clipboard {
+    export interface ClipboardAPI {
       clear(): void;
       has(format: string): boolean;
       writeText(text: string): void;
@@ -305,7 +365,7 @@ declare global {
       copyFiles(paths: string[]): void;
     }
 
-    export interface Drag {
+    export interface DragAPI {
       /**
        * @param filePaths
        * @see {@link https://www.electronjs.org/ja/docs/latest/api/web-contents#contentsstartdragitem}
@@ -321,6 +381,37 @@ declare global {
     export interface Point {
       x: number;
       y: number;
+    }
+
+    export interface ManifestJSON {
+      readonly id: string;
+      readonly version: string;
+      readonly platform: "all" | "mac" | "win";
+      readonly arch: "all" | "arm64" | "x64";
+      readonly name: string;
+      readonly logo: string;
+      readonly keywords: string[];
+      readonly devTools: boolean;
+      readonly main: {
+        readonly url: string;
+        readonly width: number;
+        readonly height: number;
+        readonly minWidth: number;
+        readonly minHeight: number;
+        readonly maxWidth: number;
+        readonly maxHeight: number;
+        readonly alwaysOnTop: boolean;
+        readonly frame: boolean;
+        readonly fullscreenable: boolean;
+        readonly maximizable: boolean;
+        readonly minimizable: boolean;
+        readonly resizable: boolean;
+        readonly backgroundColor: string;
+        readonly childWindow: boolean;
+        readonly followCursor: boolean;
+        readonly multiple: boolean;
+        readonly runAfterInstall: boolean;
+      };
     }
 
     export interface NativeImageLike {
