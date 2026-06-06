@@ -13,13 +13,13 @@ declare global {
   namespace Eagle {
     export interface PluginAPI {
       readonly event: EventAPI;
-      readonly item: unknown;
+      readonly item: ItemAPI;
       readonly folder: unknown;
       readonly smartFolder: unknown;
       readonly tag: TagAPI;
       readonly tagGroup: TagGroupAPI;
       readonly library: LibraryAPI;
-      readonly window: unknown;
+      readonly window: WindowAPI;
       readonly app: AppAPI;
       readonly os: OSAPI;
       readonly screen: ScreenAPI;
@@ -63,6 +63,165 @@ declare global {
       onPluginHide(callback: VoidFunction): void;
       onLibraryChanged(callback: LibraryChangedCallback): void;
       onThemeChanged(callback: ThemeChangedCallback): void;
+    }
+
+    export interface ItemAPI {
+      get(options: {
+        id?: string;
+        ids?: string[];
+        isSelected?: boolean;
+        isUntagged?: boolean;
+        isUnfiled?: boolean;
+        keywords?: string[];
+        tags?: string[];
+        folders?: string[];
+        ext?: string;
+        annotation?: string;
+        rating?: 0 | 1 | 2 | 3 | 4 | 5 | (number & {});
+        url?: string;
+        shape?:
+          | "square"
+          | "portrait"
+          | "panoramic-portrait"
+          | "landscape"
+          | "panoramic-landscape";
+        fields?: string[];
+      }): Promise<Item[]>;
+      getAll(): Promise<Item[]>;
+      getById(itemId: string): Promise<Item>;
+      getByIds(itemIds: string[]): Promise<Item[]>;
+      getSelected(): Promise<Item[]>;
+      getIdsWithModifiedAt(): Promise<{ id: string; modifiedAt: number }[]>;
+      count(options: {
+        id?: string;
+        ids?: string[];
+        isSelected?: boolean;
+        isUntagged?: boolean;
+        isUnfiled?: boolean;
+        keywords?: string[];
+        tags?: string[];
+        folders?: string[];
+        ext?: string;
+        annotation?: string;
+        rating?: 0 | 1 | 2 | 3 | 4 | 5 | (number & {});
+        url?: string;
+        shape?:
+          | "square"
+          | "portrait"
+          | "panoramic-portrait"
+          | "landscape"
+          | "panoramic-landscape";
+      }): Promise<number>;
+      countAll(): Promise<number>;
+      countSelected(): Promise<number>;
+      select(itemIds: string[]): Promise<boolean>;
+      addFromURL(
+        url: string,
+        options: {
+          name?: string;
+          website?: string;
+          tags?: string[];
+          folders?: string[];
+          annotation?: string;
+        },
+      ): Promise<string>;
+      addFromBase64(
+        base64: string,
+        options: {
+          name?: string;
+          website?: string;
+          tags?: string[];
+          folders?: string[];
+          annotation?: string;
+        },
+      ): Promise<string>;
+      addFromPath(
+        path: string,
+        options: {
+          name?: string;
+          website?: string;
+          tags?: string[];
+          folders?: string[];
+          annotation?: string;
+        },
+      ): Promise<string>;
+      addBookmark(
+        url: string,
+        options: {
+          name?: string;
+          base64?: string;
+          tags?: string[];
+          folders?: string[];
+          annotation?: string;
+        },
+      ): Promise<string>;
+      open(itemId: string, options?: { window?: boolean }): Promise<boolean>;
+    }
+
+    export interface Item {
+      readonly id: string;
+      name: string;
+      readonly ext: string;
+      readonly width: number;
+      readonly height: number;
+      url: string;
+      readonly isDeleted: boolean;
+      readonly annotation: string;
+      tags: string[];
+      folders: string[];
+      readonly palettes: object[];
+      readonly comments: Comment[];
+      readonly size: number;
+      star: 0 | 1 | 2 | 3 | 4 | 5 | (number & {});
+      importedAt: number;
+      readonly modifiedAt: number;
+      readonly noThumbnail: boolean;
+      readonly noPreview: boolean;
+      readonly filePath: string;
+      readonly fileURL: `file:///${string}`;
+      readonly thumbnailPath: string;
+      readonly thumbnailURL: `file:///${string}`;
+      readonly metadataFilePath: string;
+      save(): Promise<boolean>;
+      moveToTrash(): Promise<boolean>;
+      replaceFile(filePath: string): Promise<boolean>;
+      refreshThumbnail(): Promise<boolean>;
+      setCustomThumbnail(thumbnailPath: string): Promise<boolean>;
+      open(options?: { window?: boolean }): Promise<void>;
+      select(): Promise<boolean>;
+      addComment(commentData: CommentData): Promise<Comment>;
+      updateComment(
+        commentId: string,
+        commentData: CommentData,
+      ): Promise<Comment>;
+      removeComment(commentId: string): Promise<boolean>;
+    }
+
+    export type CommentData = Partial<Omit<Comment, "id" | "lastModified">>;
+
+    export interface Comment {
+      readonly id: string;
+      readonly x: number;
+      readonly y: number;
+      readonly width: number;
+      readonly height: number;
+      readonly annotation: string;
+      readonly lastModified: number;
+    }
+
+    export interface SmartFolderAPI {
+      readonly IconColor: SmartFolderIconColor;
+    }
+
+    interface SmartFolderIconColor {
+      readonly Red: "red";
+      readonly Orange: "orange";
+      readonly Yellow: "yellow";
+      readonly Green: "green";
+      readonly Aqua: "aqua";
+      readonly Blue: "blue";
+      readonly Purple: "purple";
+      readonly Pink: "pink";
     }
 
     export interface TagAPI {
@@ -112,6 +271,44 @@ declare global {
       readonly name: string;
       readonly path: string;
       readonly modificationTime: number;
+    }
+
+    export interface WindowAPI {
+      show(): Promise<void>;
+      showInactive(): Promise<void>;
+      hide(): Promise<void>;
+      focus(): Promise<void>;
+      minimize(): Promise<void>;
+      isMinimized(): Promise<boolean>;
+      restore(): Promise<void>;
+      maximize(): Promise<void>;
+      unmaximize(): Promise<void>;
+      isMaximized(): Promise<boolean>;
+      setFullScreen(flag: boolean): Promise<void>;
+      isFullScreen(): Promise<boolean>;
+      setAspectRatio(aspectRatio: number): Promise<void>;
+      setBackgroundColor(backgroundColor: string): Promise<void>;
+      setSize(width: number, height: number): Promise<void>;
+      getSize(): Promise<number[]>;
+      setBounds(bounds: Bounds): Promise<void>;
+      getBounds(): Promise<Bounds[]>;
+      setResizable(resizable: boolean): Promise<void>;
+      isResizable(): Promise<boolean>;
+      setAlwaysOnTop(alwaysOnTop: boolean): Promise<void>;
+      isAlwaysOnTop(): Promise<boolean>;
+      setPosition(x: number, y: number): Promise<void>;
+      getPosition(): Promise<[x: number, y: number]>;
+      setOpacity(opacity: number): Promise<void>;
+      getOpacity(): Promise<number>;
+      flashFrame(flag: boolean): Promise<void>;
+      setIgnoreMouseEvents(ignore: boolean): Promise<void>;
+      capturePage(rect?: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      }): Promise<NativeImageLike>;
+      setReferer(url: string): Promise<void>;
     }
 
     export interface AppAPI {
@@ -383,6 +580,8 @@ declare global {
       y: number;
     }
 
+    export type Bounds = Point & Size;
+
     export interface ManifestJSON {
       readonly id: string;
       readonly version: string;
@@ -426,7 +625,7 @@ declare global {
     // TODO: https://www.electronjs.org/docs/latest/api/structures/display
     export interface DisplayLike {
       accelerometerSupport: "available" | "unavailable" | "unknown";
-      bounds: Point & Size;
+      bounds: Bounds;
       colorDepth: number;
       colorSpace: string;
       depthPerComponent: number;
@@ -442,7 +641,7 @@ declare global {
       scaleFactor: number;
       size: Size;
       touchSupport: "available" | "unavailable" | "unknown";
-      workArea: Point & Size;
+      workArea: Bounds;
       workAreaSize: Size;
     }
   }
