@@ -14,8 +14,8 @@ declare global {
     export interface PluginAPI {
       readonly event: EventAPI;
       readonly item: ItemAPI;
-      readonly folder: unknown;
-      readonly smartFolder: unknown;
+      readonly folder: FolderAPI;
+      readonly smartFolder: SmartFolderAPI;
       readonly tag: TagAPI;
       readonly tagGroup: TagGroupAPI;
       readonly library: LibraryAPI;
@@ -209,11 +209,88 @@ declare global {
       readonly lastModified: number;
     }
 
-    export interface SmartFolderAPI {
-      readonly IconColor: SmartFolderIconColor;
+    export interface FolderAPI {
+      readonly IconColor: FolderIconColor;
+      create(options: {
+        name: string;
+        description?: string;
+        parent?: string;
+      }): Promise<Folder>;
+      createSubfolder(
+        parentId: string,
+        options: {
+          name: string;
+          description?: string;
+        },
+      ): Promise<Folder>;
+      get(options: {
+        id?: string;
+        ids?: string[];
+        isSelected?: boolean;
+        isRecent?: boolean;
+      }): Promise<Folder[]>;
+      getAll(): Promise<Folder[]>;
+      getById(folderId: string): Promise<Folder>;
+      getByIds(folderIds: string[]): Promise<Folder[]>;
+      getSelected(): Promise<Folder[]>;
+      getRecent(): Promise<Folder[]>;
+      open(folderId: string): Promise<void>;
     }
 
-    interface SmartFolderIconColor {
+    export interface Folder {
+      readonly id: string;
+      name: string;
+      description: string;
+      readonly icon: string;
+      iconColor: string;
+      readonly createdAt: number;
+      parent: string | null;
+      readonly children: Folder[];
+      save(): Promise<void>;
+      open(): Promise<void>;
+    }
+
+    export interface SmartFolderAPI {
+      readonly IconColor: FolderIconColor;
+      create(options: {
+        name: string;
+        conditions: unknown[];
+        description?: string;
+        iconColor?: string;
+        parent?: string;
+      }): Promise<SmartFolder>;
+      get(options: { id?: string; ids?: string[] }): Promise<SmartFolder[]>;
+      getAll(): Promise<SmartFolder[]>;
+      getById(smartFolderId: string): Promise<SmartFolder>;
+      getByIds(smartFolderIds: string[]): Promise<SmartFolder[]>;
+      remove(smartFolderId: string): Promise<boolean>;
+      // TODO: 動作確認してから型を厳密にする
+      getRules(): Promise<unknown>;
+      rule(property: string): Promise<unknown>;
+    }
+
+    export interface SmartFolder {
+      readonly id: string;
+      name: string;
+      /**
+       * TODO: 動作確認してから型を厳密にする
+       */
+      conditions: unknown[];
+      description: string;
+      readonly icon: string;
+      iconColor: string;
+      readonly modificationTime: number;
+      readonly children: SmartFolder[];
+      readonly parent: string | null;
+      readonly imageCount: number;
+      save(): Promise<SmartFolder>;
+      getItems(options?: {
+        orderBy?: string;
+        fields?: string[];
+      }): Promise<Item[]>;
+    }
+
+    interface FolderIconColor {
       readonly Red: "red";
       readonly Orange: "orange";
       readonly Yellow: "yellow";
@@ -500,7 +577,7 @@ declare global {
       submenu?: MenuItemLike[];
       click?: (
         menuItem: MenuItemLike,
-        window: unknown,
+        window: WindowAPI,
         event: KeyboardEvent,
       ) => void;
     }
