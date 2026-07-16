@@ -59,6 +59,34 @@ const appDataPath = await eagle.app.getPath("appData");
 await eagle.app.show();
 ```
 
+Lifecycle events are available directly on the global object.
+
+```ts
+eagle.onPluginCreate((plugin) => {
+  console.log(plugin.manifest.name);
+  console.log(plugin.path);
+});
+```
+
+## Manifest types
+
+`Eagle.ManifestJSON` covers window, background service, format preview, and inspector plugins. Use `satisfies` to validate a manifest object without widening its values.
+
+```ts
+const manifest = {
+  id: "example-plugin",
+  version: "1.0.0",
+  name: "Example Plugin",
+  logo: "/logo.png",
+  keywords: ["example"],
+  main: {
+    url: "index.html",
+    width: 640,
+    height: 480,
+  },
+} satisfies Eagle.ManifestJSON;
+```
+
 ## Do not import this package at runtime
 
 This package is type-only.
@@ -114,11 +142,7 @@ Then include them explicitly if needed.
 
 ## Type coverage
 
-This package aims to cover the Eagle Plugin API.
-
-Initial coverage may be partial. APIs are added based on the official Eagle Plugin API documentation and verified examples.
-
-Planned areas include:
+The package covers all modules in the official core Eagle Plugin API reference:
 
 - `eagle.app`
 - `eagle.item`
@@ -137,17 +161,39 @@ Planned areas include:
 - `eagle.drag`
 - `eagle.shell`
 - `eagle.log`
-- Additional modules such as FFmpeg, AI SDK, and AI Search when applicable
+
+It also includes the lifecycle methods exposed directly on `eagle`, instance types such as `Item`, `Folder`, and `SmartFolder`, and manifest types for all four official plugin forms.
+
+FFmpeg, AI SDK, and AI Search are optional extra modules and are not currently included.
+
+Features introduced in newer Eagle builds are included in the main type and annotated with their minimum build in JSDoc.
+
+## Electron-compatible structures
+
+Some Eagle methods accept or return objects modeled after Electron, including `Display`, `NativeImage`, dialog options, rectangles, and context-menu items.
+
+This package declares only the structures and methods guaranteed by the Eagle documentation. It verifies those declarations against Electron during package development, but does not require plugin projects to install Electron.
+
+The deprecated names `Eagle.Bounds`, `Eagle.DisplayLike`, `Eagle.NativeImageLike`, and `Eagle.MenuItemLike` remain as aliases for migration.
+
+## Corrections from 0.0.1
+
+- Lifecycle methods are declared directly on `eagle`; the undocumented `eagle.event` property was removed.
+- The recent-folders method is `eagle.folder.getRecents()`.
+- Open and save dialogs return separate result types.
+- `eagle.window.getBounds()` returns one rectangle and `setReferer()` is synchronous.
+- `NativeImage` conversion methods return `Buffer` or `string` synchronously.
 
 ## Contributing
 
-Developer documentation will be provided in `CONTRIBUTOR.md`.
+Run `pnpm test`, `pnpm lint`, and `pnpm --filter eagle-plugin-dts pack:dry` before submitting changes.
 
 ## References
 
 - Eagle Plugin API: https://developer.eagle.cool/plugin-api
 - Eagle Plugin API Japanese documentation: https://developer.eagle.cool/plugin-api/ja-jp
-- Eagle Plugin API app reference: https://developer.eagle.cool/plugin-api/api/app
+- Eagle Plugin API reference: https://developer.eagle.cool/plugin-api/api
+- Eagle manifest reference: https://developer.eagle.cool/plugin-api/tutorial/manifest
 
 ## License
 

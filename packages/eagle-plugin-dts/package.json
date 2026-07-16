@@ -5,6 +5,7 @@
   "types": "./eagle-plugin.d.ts",
   "files": [
     "eagle-plugin.d.ts",
+    "types",
     "README.md",
     "LICENSE",
     "package.json"
