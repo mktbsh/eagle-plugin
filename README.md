@@ -6,6 +6,7 @@ Monorepo for Eagle plugin utilities.
 
 | Package | Version | Description |
 |---------|---------|-------------|
+| [create-eagle-plugin](./packages/create-eagle-plugin) | 0.0.1 | Interactive and non-interactive Eagle plugin project generator |
 | [eagle-plugin](./packages/eagle-plugin) | 0.0.1 | Framework and `eagle` command for Eagle plugin development |
 | [eagle-plugin-dts](./packages/eagle-plugin-dts) | ![npm](https://img.shields.io/npm/v/eagle-plugin-dts) | TypeScript type definitions for the Eagle Plugin API |
 | [eagle-plugin-manifest](./packages/eagle-plugin-manifest) | 0.0.1 | Runtime validation and JSON Schema for Eagle plugin manifests |

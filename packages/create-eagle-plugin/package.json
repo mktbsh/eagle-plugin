@@ -1,0 +1,47 @@
+{
+  "name": "create-eagle-plugin",
+  "version": "0.0.1",
+  "description": "Create a typed Eagle plugin project",
+  "type": "module",
+  "bin": {
+    "create-eagle-plugin": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "pnpm --filter eagle-plugin-manifest build && pnpm --filter eagle-plugin build && pnpm run build && node --test tests/*.test.mjs",
+    "pack:dry": "pnpm pack --dry-run",
+    "prepack": "pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "eagle-plugin": "workspace:*",
+    "eagle-plugin-dts": "workspace:*",
+    "eagle-plugin-manifest": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "keywords": [
+    "eagle-app",
+    "eagle-plugin",
+    "scaffold",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mktbsh/eagle-plugin.git",
+    "directory": "packages/create-eagle-plugin"
+  },
+  "author": {
+    "name": "mktbsh",
+    "url": "https://github.com/mktbsh"
+  },
+  "license": "MIT"
+}

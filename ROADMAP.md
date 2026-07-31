@@ -18,9 +18,9 @@ Core Plugin API と manifest の型定義は整備済みである。
 
 manifest の実行時検証、TypeScript 型、JSON Schema は `eagle-plugin-manifest` の strict schema から提供する。
 
-Vanilla Window は `eagle build` で production build できる。
+Vanilla Window は `pnpm create eagle-plugin` で生成し、`eagle build` で production build できる。
 
-次の作業は `create-eagle-plugin` から同じ Vanilla Window project を生成する tracer bullet である。
+次の作業は、生成した Window の release candidate を `eagle check` で Preflight する経路である。
 
 ## Plugin Author interface
 
@@ -79,13 +79,15 @@ entrypoint のパスは設定に列挙せず、`entrypoints/` 配下のファイ
 
 Vite 固有の実装は manifest と project topology の規則を持たず、共通 build module の adapter とする。
 
-### 3. `create-eagle-plugin`
+### 3. `create-eagle-plugin`（Vanilla Window 完了）
 
 公式の4種類のプラグイン構成から、新規プロジェクトを生成する。
 
 生成する manifest は `eagle-plugin-manifest` で検証し、生成直後に型チェックが通る状態にする。
 
 最初の版では、テンプレートの種類、出力先、UI 実装方式を選択対象とする。
+
+Vanilla TypeScript の Window project は、対話実行と非対話実行の両方から生成できる。生成結果は install、typecheck、production build、共通 manifest 検証まで自動テストする。
 
 UI 実装方式はフレームワークなしの TypeScript と React に限定する。ほかの UI フレームワークは、Eagle 上での実行互換性を確認してから追加する。
 

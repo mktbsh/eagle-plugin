@@ -220,6 +220,24 @@ importers:
         specifier: 'catalog:'
         version: 7.0.2
 
+  packages/create-eagle-plugin:
+    devDependencies:
+      '@types/node':
+        specifier: 26.1.1
+        version: 26.1.1
+      eagle-plugin:
+        specifier: workspace:*
+        version: link:../eagle-plugin
+      eagle-plugin-dts:
+        specifier: workspace:*
+        version: link:../eagle-plugin-dts
+      eagle-plugin-manifest:
+        specifier: workspace:*
+        version: link:../eagle-plugin-manifest
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+
   packages/eagle-plugin:
     dependencies:
       eagle-plugin-manifest:
