@@ -33,6 +33,8 @@ export interface WindowProject {
   readonly entrypointPath: string;
   readonly outputPath: string;
   readonly stagingPath: string;
+  readonly developmentPath: string;
+  readonly developmentStagingPath: string;
 }
 
 export async function discoverWindowProject(
@@ -96,5 +98,7 @@ export async function discoverWindowProject(
     entrypointPath,
     outputPath: join(root, "dist"),
     stagingPath: join(root, ".eagle-plugin-build"),
+    developmentPath: join(root, ".eagle-plugin-dev"),
+    developmentStagingPath: join(root, ".eagle-plugin-dev-build"),
   };
 }

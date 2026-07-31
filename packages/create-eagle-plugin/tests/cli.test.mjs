@@ -83,6 +83,7 @@ test("creates the same Vanilla Window project interactively and non-interactivel
   assert.equal(packageJson.devDependencies["eagle-plugin"], "0.0.1");
   assert.equal(packageJson.devDependencies["eagle-plugin-dts"], "0.0.1");
   assert.equal(packageJson.scripts.typecheck, "tsc --noEmit");
+  assert.equal(packageJson.scripts.dev, "eagle dev");
   assert.equal(packageJson.scripts.build, "eagle build");
   assert.equal(packageJson.scripts.check, "eagle check");
   assert.match(

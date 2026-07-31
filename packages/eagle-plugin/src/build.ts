@@ -4,15 +4,13 @@ import {
   readFile,
   rename,
   rm,
-  stat,
   writeFile,
 } from "node:fs/promises";
-import { dirname, join, posix, relative, resolve, sep } from "node:path";
+import { dirname, join, posix } from "node:path";
 import { type InlineConfig, build as viteBuild } from "vite";
-import { resolveWindowConfig } from "./config.js";
 import { EagleProjectError } from "./errors.js";
-import { loadEagleConfig } from "./load-config.js";
-import { discoverWindowProject } from "./project.js";
+import { requireFile, resolveInside } from "./project-files.js";
+import { resolveWindowProject } from "./resolve-project.js";
 
 export const EAGLE_CHROMIUM_TARGET = "chrome108";
 
@@ -136,45 +134,12 @@ ${styleBlock}    <title>Eagle Plugin</title>
 `;
 }
 
-async function requireFile(path: string, label: string): Promise<void> {
-  try {
-    const file = await stat(path);
-    if (!file.isFile()) {
-      throw new EagleProjectError(`${label} is not a file: ${path}`);
-    }
-  } catch (error) {
-    if (error instanceof EagleProjectError) {
-      throw error;
-    }
-    throw new EagleProjectError(`${label} does not exist: ${path}`, {
-      cause: error,
-    });
-  }
-}
-
-function resolveInside(root: string, projectPath: string): string {
-  const resolvedPath = resolve(root, projectPath);
-  const relativePath = relative(root, resolvedPath);
-  if (
-    relativePath === ".." ||
-    relativePath.startsWith(`..${sep}`) ||
-    relativePath === ""
-  ) {
-    throw new EagleProjectError(
-      `Path must stay inside the project: ${projectPath}`,
-    );
-  }
-  return resolvedPath;
-}
-
 export interface BuildResult {
   readonly outputPath: string;
 }
 
 export async function buildProject(root: string): Promise<BuildResult> {
-  const project = await discoverWindowProject(resolve(root));
-  const configInput = await loadEagleConfig(project.configPath, project.root);
-  const config = resolveWindowConfig(configInput);
+  const { project, config } = await resolveWindowProject(root);
   const logoSourcePath = resolveInside(project.root, config.logoPath);
 
   await requireFile(project.entrypointPath, "Window entrypoint");

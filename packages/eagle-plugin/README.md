@@ -38,6 +38,22 @@ if (app !== null) {
 }
 ```
 
+## Development loop
+
+```bash
+eagle dev
+```
+
+The command writes a stable development plugin to `.eagle-plugin-dev`, starts Vite on `127.0.0.1`, and prints the absolute directory to import into Eagle. Import that directory once. Its local `index.html` bridge connects to the printed Vite address; the development manifest never contains an HTTP URL.
+
+Vite applies CSS updates and reloads the bridge for Window module changes. Changes to `eagle.config.ts` or the entrypoint topology rebuild the stable development plugin and print an explicit instruction to reload it in Eagle. The framework does not call private Eagle reload APIs.
+
+By default Vite selects port 5173 or the next available port. Require a particular port when another tool needs a fixed address:
+
+```bash
+eagle dev --port 5173
+```
+
 ## Production build
 
 ```bash
@@ -46,7 +62,7 @@ eagle build
 
 The command writes a clean release candidate to `dist` containing the generated manifest, HTML, compiled entrypoint, imported assets, and configured logo. Output targets Eagle 4.0's Electron 22 and Chromium 108 runtime and uses relative asset URLs.
 
-The initial implementation supports Vanilla TypeScript Window plugins. Service, Formats, React, and development mode are added by later tickets.
+The initial implementation supports Vanilla TypeScript Window plugins. Service, Formats, and React are added by later tickets.
 
 ## Preflight
 
@@ -95,6 +111,7 @@ A passing result means only that no implemented mechanical blocker was detected.
 
 ```bash
 eagle --help
+eagle dev --help
 eagle build --help
 eagle check --help
 ```

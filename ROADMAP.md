@@ -20,7 +20,7 @@ manifest の実行時検証、TypeScript 型、JSON Schema は `eagle-plugin-man
 
 Vanilla Window は `pnpm create eagle-plugin` で生成し、`eagle build` で production build できる。
 
-次の作業は、Vanilla Window を Eagle 上で反復開発する `eagle dev` のローカル bridge である。
+`eagle dev` のローカル bridge、watch 更新、reload 案内は自動検証済みである。次の作業へ進む前に、Eagle 4.0.0 の「Plugin > Import Local Project」で基本接続を確認する。
 
 ## Plugin Author interface
 
@@ -111,7 +111,7 @@ Vanilla Window の最小版では、manifest、HTML、compiled entrypoint、logo
 
 検証結果は人間向けの表示と機械処理向けの終了コードを持つ。成功時も「機械的な阻害要因は検出されなかった。手動確認と Eagle による審査は残っている」と明示する。
 
-### 5. `eagle dev`
+### 5. `eagle dev`（自動検証完了・Eagle 4.0 実機確認待ち）
 
 開発サーバーに、production build と同じ manifest 検証、設定解決、entrypoint 解析を組み込む。
 

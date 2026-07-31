@@ -34,6 +34,7 @@ After generation:
 cd my-plugin
 pnpm install
 pnpm typecheck
+pnpm dev
 pnpm build
 pnpm check
 ```

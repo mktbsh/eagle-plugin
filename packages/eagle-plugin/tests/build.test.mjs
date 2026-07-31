@@ -1,69 +1,13 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
-import {
-  cp,
-  mkdir,
-  mkdtemp,
-  readFile,
-  rm,
-  symlink,
-  writeFile,
-} from "node:fs/promises";
+import { readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import { test } from "node:test";
-import { fileURLToPath } from "node:url";
 import { parseManifest } from "eagle-plugin-manifest";
-
-const packageRoot = fileURLToPath(new URL("..", import.meta.url));
-const repositoryRoot = fileURLToPath(new URL("../../..", import.meta.url));
-const contextRoot = join(repositoryRoot, ".context");
-const cliPath = join(packageRoot, "dist", "cli.js");
-const onePixelPng = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
-  "base64",
-);
-
-async function runCli(args, cwd) {
-  return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [cliPath, ...args], {
-      cwd,
-      env: { ...process.env, NO_COLOR: "1" },
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let stdout = "";
-    let stderr = "";
-    child.stdout.setEncoding("utf8");
-    child.stderr.setEncoding("utf8");
-    child.stdout.on("data", (chunk) => {
-      stdout += chunk;
-    });
-    child.stderr.on("data", (chunk) => {
-      stderr += chunk;
-    });
-    child.on("error", reject);
-    child.on("close", (code) => resolve({ code, stdout, stderr }));
-  });
-}
-
-async function prepareFixture(name) {
-  await mkdir(contextRoot, { recursive: true });
-  const projectRoot = await mkdtemp(join(contextRoot, "eagle-build-"));
-  const fixtureRoot = join(packageRoot, "tests", "fixtures", name);
-  await cp(fixtureRoot, projectRoot, { recursive: true });
-  await writeFile(join(projectRoot, "logo.png"), onePixelPng);
-  const packageLink = join(projectRoot, "node_modules", "eagle-plugin");
-  await mkdir(dirname(packageLink), { recursive: true });
-  await symlink(
-    packageRoot,
-    packageLink,
-    process.platform === "win32" ? "junction" : "dir",
-  );
-  return projectRoot;
-}
+import { prepareFixture, runCli } from "./project-fixture.mjs";
 
 test("builds a Vanilla Window release candidate", async () => {
-  const projectRoot = await prepareFixture("window-project");
+  const projectRoot = await prepareFixture("window-project", "eagle-build-");
 
   try {
     const result = await runCli(["build"], projectRoot);
@@ -93,7 +37,7 @@ test("builds a Vanilla Window release candidate", async () => {
 });
 
 test("replaces stale framework output", async () => {
-  const projectRoot = await prepareFixture("window-project");
+  const projectRoot = await prepareFixture("window-project", "eagle-build-");
 
   try {
     const firstBuild = await runCli(["build"], projectRoot);
@@ -109,7 +53,10 @@ test("replaces stale framework output", async () => {
 });
 
 test("rejects conflicting plugin topologies before build", async () => {
-  const projectRoot = await prepareFixture("conflicting-project");
+  const projectRoot = await prepareFixture(
+    "conflicting-project",
+    "eagle-build-",
+  );
 
   try {
     const result = await runCli(["build"], projectRoot);
@@ -122,7 +69,10 @@ test("rejects conflicting plugin topologies before build", async () => {
 });
 
 test("reports invalid typed configuration without a stack trace", async () => {
-  const projectRoot = await prepareFixture("invalid-config-project");
+  const projectRoot = await prepareFixture(
+    "invalid-config-project",
+    "eagle-build-",
+  );
 
   try {
     const result = await runCli(["build"], projectRoot);
