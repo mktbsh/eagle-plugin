@@ -18,7 +18,9 @@ Core Plugin API と manifest の型定義は整備済みである。
 
 manifest の実行時検証、TypeScript 型、JSON Schema は `eagle-plugin-manifest` の strict schema から提供する。
 
-次の作業は Vanilla Window を `eagle build` で production build する tracer bullet である。
+Vanilla Window は `eagle build` で production build できる。
+
+次の作業は `create-eagle-plugin` から同じ Vanilla Window project を生成する tracer bullet である。
 
 ## Plugin Author interface
 
@@ -65,7 +67,7 @@ validateManifest(input)
 - 不正な入力から、問題箇所を特定できる検証エラーを返す。
 - JSON Schema を package の配布物に含める。
 
-### 2. `eagle build`
+### 2. `eagle build`（完了）
 
 型付きの `eagle.config.ts` と規約化された entrypoint から、Eagle が読み込める production build を生成する。
 
