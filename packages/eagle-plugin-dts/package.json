@@ -12,8 +12,12 @@
   ],
   "scripts": {
     "test": "pnpm run typecheck",
+    "pretypecheck": "pnpm --filter eagle-plugin-manifest build",
     "typecheck": "tsc --noEmit",
     "pack:dry": "pnpm pack --dry-run"
+  },
+  "dependencies": {
+    "eagle-plugin-manifest": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "26.1.1",

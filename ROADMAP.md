@@ -16,7 +16,9 @@ Core Plugin API と manifest の型定義は整備済みである。
 
 型定義は公式ドキュメントを根拠とし、Electron 由来の型は Eagle が公開する範囲だけをローカルに定義する。
 
-次の作業は manifest の実行時検証を提供するパッケージである。
+manifest の実行時検証、TypeScript 型、JSON Schema は `eagle-plugin-manifest` の strict schema から提供する。
+
+次の作業は Vanilla Window を `eagle build` で production build する tracer bullet である。
 
 ## Plugin Author interface
 
@@ -32,7 +34,7 @@ manifest、Vite、React の低レベル module はこの interface の内側で�
 
 ## 実装順
 
-### 1. `eagle-plugin-manifest`
+### 1. `eagle-plugin-manifest`（完了）
 
 manifest の型、実行時検証、JSON Schema を一つの source of truth から提供する。
 
@@ -63,7 +65,19 @@ validateManifest(input)
 - 不正な入力から、問題箇所を特定できる検証エラーを返す。
 - JSON Schema を package の配布物に含める。
 
-### 2. `create-eagle-plugin`
+### 2. `eagle build`
+
+型付きの `eagle.config.ts` と規約化された entrypoint から、Eagle が読み込める production build を生成する。
+
+Plugin Author は `eagle.config.ts` を唯一の入力として編集し、配布用の `manifest.json` はビルド時に生成する。
+
+entrypoint のパスは設定に列挙せず、`entrypoints/` 配下のファイル配置から推論する。Window は `window.*`、Service は `service.*`、Formats は名前付き group 配下の `thumbnail.*`、`viewer.*`、`inspector.*` で表現し、Window、Service、Formats は相互に排他とする。
+
+最初の tracer bullet は Vanilla TypeScript の Window plugin とし、Eagle 4.0.0 の Electron 22／Chromium 108 で実行できる target、相対 URL、clean output を外部 command から検証する。
+
+Vite 固有の実装は manifest と project topology の規則を持たず、共通 build module の adapter とする。
+
+### 3. `create-eagle-plugin`
 
 公式の4種類のプラグイン構成から、新規プロジェクトを生成する。
 
@@ -79,7 +93,7 @@ UI 実装方式はフレームワークなしの TypeScript と React に限定�
 - 生成結果に必要な entrypoint、manifest、型参照が含まれる。
 - 生成した全テンプレートで install、typecheck、build が成功する。
 
-### 3. `eagle check`
+### 4. `eagle check`
 
 既存プロジェクトに対する公開前の Preflight を提供する。Eagle による審査の合格判定は行わない。
 
@@ -91,9 +105,9 @@ UI 実装方式はフレームワークなしの TypeScript と React に限定�
 
 検証結果は人間向けの表示と機械処理向けの終了コードを持つ。成功時も「機械的な阻害要因は検出されなかった。手動確認と Eagle による審査は残っている」と明示する。
 
-### 4. Vite 連携
+### 5. `eagle dev`
 
-開発サーバーと production build に、manifest 検証とプラグイン用ファイルの配置を組み込む。
+開発サーバーに、production build と同じ manifest 検証、設定解決、entrypoint 解析を組み込む。
 
 `eagle dev` と `eagle build` は同じ設定解決と entrypoint 解析を使い、開発時と production build の解釈を一致させる。
 
@@ -101,17 +115,15 @@ UI 実装方式はフレームワークなしの TypeScript と React に限定�
 
 自動再読み込みのために Eagle の非公開 IPC は利用しない。HMR は Eagle 上の実機プロトタイプで成功した組み合わせだけを対応対象とする。
 
-Vite 固有の実装は、manifest とプロジェクト検証のロジックを持たず、既存パッケージの adapter として実装する。
-
-Plugin Author は型付きの `eagle.config.ts` を唯一の入力として編集し、配布用の `manifest.json` はビルド時に生成する。
-
-entrypoint のパスは `eagle.config.ts` に列挙せず、`entrypoints/` 配下の規約化されたファイル配置から推論する。
-
-Window は `entrypoints/window.*`、Service は `entrypoints/service.*`、Preview と Inspector は `entrypoints/formats/<group>/` 配下の `thumbnail.*`、`viewer.*`、`inspector.*` で表現する。これらのプラグイン種別は同じプロジェクト内で混在させない。
-
 共通のビルド処理は React に依存させず、React を選択したプロジェクトだけが React 用の Vite adapter を利用する。
 
-### 5. Extra Module の型定義
+### 6. React と残りのプラグイン形態
+
+Vanilla Window の生成、build、Preflight、development loop が通った後に React Window を追加する。HMR は Eagle 4.0 実機で成功した role だけを対応対象とする。
+
+その後、同じ command surface を Service、Format Preview、Inspector、複合 format group へ拡張する。各形態は生成から build、Preflight、development までを通す tracer bullet として追加する。
+
+### 7. Extra Module の型定義
 
 FFmpeg、AI SDK、AI Search の型定義は Core 向けツール群の後に追加する。
 
