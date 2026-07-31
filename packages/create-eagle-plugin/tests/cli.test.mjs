@@ -84,6 +84,7 @@ test("creates the same Vanilla Window project interactively and non-interactivel
   assert.equal(packageJson.devDependencies["eagle-plugin-dts"], "0.0.1");
   assert.equal(packageJson.scripts.typecheck, "tsc --noEmit");
   assert.equal(packageJson.scripts.build, "eagle build");
+  assert.equal(packageJson.scripts.check, "eagle check");
   assert.match(
     await readFile(join(projectPath, "env.d.ts"), "utf8"),
     /reference types="eagle-plugin-dts"/u,
@@ -178,7 +179,7 @@ test("requires permission before replacing a non-empty directory", async (t) => 
   );
 });
 
-test("installs, typechecks, builds, and validates a generated project", async (t) => {
+test("installs, typechecks, builds, and checks a generated project", async (t) => {
   const scratch = await createScratch();
   t.after(() => rm(scratch, { recursive: true, force: true }));
 
@@ -225,6 +226,10 @@ test("installs, typechecks, builds, and validates a generated project", async (t
 
   const build = runPnpm(projectPath, ["build"]);
   assert.equal(build.status, 0, `${build.stdout}\n${build.stderr}`);
+
+  const check = runPnpm(projectPath, ["run", "check", "--json"]);
+  assert.equal(check.status, 0, `${check.stdout}\n${check.stderr}`);
+  assert.match(check.stdout, /"mechanicalStatus": "pass"/u);
 
   const manifest = await readJson(join(projectPath, "dist", "manifest.json"));
   const validatedManifest = parseManifest(manifest);

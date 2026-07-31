@@ -1,0 +1,12 @@
+{
+  "id": "fixture-window",
+  "version": "1.0.0",
+  "name": "Fixture Window",
+  "logo": "/logo.svg",
+  "keywords": [],
+  "main": {
+    "url": "index.html",
+    "width": 640,
+    "height": 480
+  }
+}

@@ -46,13 +46,57 @@ eagle build
 
 The command writes a clean release candidate to `dist` containing the generated manifest, HTML, compiled entrypoint, imported assets, and configured logo. Output targets Eagle 4.0's Electron 22 and Chromium 108 runtime and uses relative asset URLs.
 
-The initial tracer bullet supports Vanilla TypeScript Window plugins. Service, Formats, React, development mode, and Preflight are added by later tickets.
+The initial implementation supports Vanilla TypeScript Window plugins. Service, Formats, React, and development mode are added by later tickets.
+
+## Preflight
+
+Inspect the release candidate after a production build.
+
+```bash
+eagle check
+eagle check --json
+```
+
+The default output separates mechanical errors, warnings that require context, and manual checks. Mechanical errors return a nonzero status. Warnings and incomplete manual checks do not.
+
+`--json` writes this machine-readable shape to stdout:
+
+```json
+{
+  "schemaVersion": 1,
+  "mechanicalStatus": "pass",
+  "errors": [],
+  "warnings": [],
+  "manualChecks": [
+    {
+      "code": "manual.functionality",
+      "message": "Confirm that the plugin behavior and listing text are accurate."
+    }
+  ]
+}
+```
+
+Every error and warning has a stable `code`, a `message`, and an optional release-relative `path`. The initial Window rules use the manifest validator's `manifest.*` codes and these release codes:
+
+- `release.manifest.missing`
+- `release.manifest.invalid_json`
+- `release.reference.unsafe`
+- `release.logo.missing`
+- `release.html.missing`
+- `release.entrypoint.missing`
+- `release.dev_tools.enabled`
+- `release.network_reference.detected` (warning)
+
+The manual checklist uses `manual.functionality`, `manual.visual_assets`, `manual.cancellation_and_data_safety`, `manual.author_understanding`, and `manual.fresh_install`.
+
+A passing result means only that no implemented mechanical blocker was detected. Manual checks and Eagle Plugin Center review remain required.
 
 ## Help
 
 ```bash
 eagle --help
 eagle build --help
+eagle check --help
 ```
 
 ## Development

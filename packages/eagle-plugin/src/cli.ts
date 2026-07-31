@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-import { relative } from "node:path";
+import { join, relative } from "node:path";
 import { parseArgs } from "node:util";
 import { buildProject } from "./build.js";
+import { inspectRelease, renderPreflightResult } from "./check.js";
 
 const rootHelp = `Build and validate Eagle plugins.
 
@@ -11,9 +12,11 @@ Usage:
 
 Commands:
   build    Create a production build
+  check    Inspect the production release candidate
 
 Examples:
   eagle build
+  eagle check
 
 Run "eagle <command> --help" for command-specific help.
 Report issues: https://github.com/mktbsh/eagle-plugin/issues
@@ -26,6 +29,15 @@ Usage:
 
 The command reads eagle.config.ts and entrypoints from the current directory,
 then writes a clean release candidate to dist.
+`;
+
+const checkHelp = `Inspect the production release candidate in dist.
+
+Usage:
+  eagle check [--json]
+
+Options:
+  --json    Write the documented machine-readable result
 `;
 
 interface CliIo {
@@ -67,6 +79,49 @@ async function runBuild(args: readonly string[], io: CliIo): Promise<number> {
   }
 }
 
+async function runCheck(args: readonly string[], io: CliIo): Promise<number> {
+  if (hasHelp(args)) {
+    io.stdout.write(checkHelp);
+    return 0;
+  }
+
+  let json = false;
+  try {
+    const parsed = parseArgs({
+      args,
+      strict: true,
+      allowPositionals: false,
+      options: { json: { type: "boolean", default: false } },
+    });
+    json = parsed.values.json ?? false;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`eagle check: ${message}\n`);
+    return 2;
+  }
+
+  try {
+    const result = await inspectRelease(join(process.cwd(), "dist"));
+    io.stdout.write(
+      json
+        ? `${JSON.stringify(result, null, 2)}\n`
+        : renderPreflightResult(result),
+    );
+    return result.mechanicalStatus === "pass" ? 0 : 1;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.stderr.write(`eagle check: ${message}\n`);
+    if (
+      process.env.DEBUG !== undefined &&
+      error instanceof Error &&
+      error.stack !== undefined
+    ) {
+      io.stderr.write(`${error.stack}\n`);
+    }
+    return 1;
+  }
+}
+
 async function runCli(args: readonly string[], io: CliIo): Promise<number> {
   if (args.length === 0) {
     io.stdout.write(rootHelp);
@@ -78,17 +133,25 @@ async function runCli(args: readonly string[], io: CliIo): Promise<number> {
       io.stdout.write(buildHelp);
       return 0;
     }
+    if (args[1] === "check") {
+      io.stdout.write(checkHelp);
+      return 0;
+    }
     io.stdout.write(rootHelp);
     return args.length === 1 ? 0 : 1;
   }
 
-  if (hasHelp(args) && args[0] !== "build") {
+  if (hasHelp(args) && args[0] !== "build" && args[0] !== "check") {
     io.stdout.write(rootHelp);
     return 0;
   }
 
   if (args[0] === "build") {
     return runBuild(args.slice(1), io);
+  }
+
+  if (args[0] === "check") {
+    return runCheck(args.slice(1), io);
   }
 
   io.stderr.write(

@@ -20,7 +20,7 @@ manifest の実行時検証、TypeScript 型、JSON Schema は `eagle-plugin-man
 
 Vanilla Window は `pnpm create eagle-plugin` で生成し、`eagle build` で production build できる。
 
-次の作業は、生成した Window の release candidate を `eagle check` で Preflight する経路である。
+次の作業は、Vanilla Window を Eagle 上で反復開発する `eagle dev` のローカル bridge である。
 
 ## Plugin Author interface
 
@@ -97,9 +97,11 @@ UI 実装方式はフレームワークなしの TypeScript と React に限定�
 - 生成結果に必要な entrypoint、manifest、型参照が含まれる。
 - 生成した全テンプレートで install、typecheck、build が成功する。
 
-### 4. `eagle check`
+### 4. `eagle check`（Vanilla Window 最小版完了）
 
 既存プロジェクトに対する公開前の Preflight を提供する。Eagle による審査の合格判定は行わない。
+
+Vanilla Window の最小版では、manifest、HTML、compiled entrypoint、logo、`devTools` を機械的エラーとして検査する。ネットワーク参照は説明が必要な警告に留め、手動チェックリストと JSON 出力を同じ判定から生成する。
 
 結果を次の三種類に分ける。
 

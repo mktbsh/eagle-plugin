@@ -30,6 +30,7 @@ export function createVanillaWindowProject(
           scripts: {
             typecheck: "tsc --noEmit",
             build: "eagle build",
+            check: "eagle check",
           },
           devDependencies: {
             "@types/node": "26.1.1",
@@ -135,6 +136,8 @@ Vanilla TypeScript Window plugin for Eagle.
 \`pnpm typecheck\` checks the project without emitting files.
 
 \`pnpm build\` writes the Eagle release candidate to \`dist/\`.
+
+\`pnpm check\` runs the release Preflight after a successful build.
 
 Replace \`logo.png\` with your plugin's artwork before distribution.
 `,

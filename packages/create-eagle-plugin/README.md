@@ -35,6 +35,7 @@ cd my-plugin
 pnpm install
 pnpm typecheck
 pnpm build
+pnpm check
 ```
 
 ## License
