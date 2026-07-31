@@ -97,7 +97,7 @@ UI 実装方式はフレームワークなしの TypeScript と React に限定�
 - 生成結果に必要な entrypoint、manifest、型参照が含まれる。
 - 生成した全テンプレートで install、typecheck、build が成功する。
 
-### 4. `eagle check`（Vanilla Window 最小版完了）
+### 4. `eagle check`（公開基準版完了）
 
 既存プロジェクトに対する公開前の Preflight を提供する。Eagle による審査の合格判定は行わない。
 
@@ -110,6 +110,10 @@ Vanilla Window の最小版では、manifest、HTML、compiled entrypoint、logo
 - 手動チェックリスト: 機能説明の正確性、画像、キャンセルとデータ保護、Plugin Author 自身の理解、生成した `.eagleplugin` の新規インストール確認
 
 検証結果は人間向けの表示と機械処理向けの終了コードを持つ。成功時も「機械的な阻害要因は検出されなかった。手動確認と Eagle による審査は残っている」と明示する。
+
+各 rule は根拠となる公式 URL と確認日を持つ。公開基準は 2026-08-01 に再確認し、機械的 error、文脈依存の warning、手動チェックを同じ schema v2 の判定から人間向け表示と JSON へ出力する。
+
+入れ子のアーカイブと symbolic link は Eagle が常に拒否するという意味ではなく、初期 template が必要としないため framework 固有の release directory contract で禁止する。
 
 ### 5. `eagle dev`（自動検証完了・Eagle 4.0 実機確認待ち）
 

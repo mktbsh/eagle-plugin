@@ -79,20 +79,45 @@ The default output separates mechanical errors, warnings that require context, a
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "mechanicalStatus": "pass",
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    {
+      "code": "release.network_reference.detected",
+      "severity": "warning",
+      "message": "A network reference was detected. Confirm its destination, transmitted data, purpose, and required disclosure.",
+      "path": "assets/window.js",
+      "evidence": [
+        {
+          "path": "assets/window.js",
+          "line": 1,
+          "excerpt": "https://api.example.com"
+        }
+      ],
+      "rule": {
+        "sourceUrl": "https://developer.eagle.cool/plugin-api/plugin-review/criteria/security-and-privacy",
+        "checkedAt": "2026-08-01"
+      }
+    }
+  ],
   "manualChecks": [
     {
       "code": "manual.functionality",
-      "message": "Confirm that the plugin behavior and listing text are accurate."
+      "severity": "manual",
+      "message": "Confirm that the plugin behavior and listing text are accurate.",
+      "rule": {
+        "sourceUrl": "https://developer.eagle.cool/plugin-api/plugin-review/criteria/functionality-and-policy",
+        "checkedAt": "2026-08-01"
+      }
     }
   ]
 }
 ```
 
-Every error and warning has a stable `code`, a `message`, and an optional release-relative `path`. The initial Window rules use the manifest validator's `manifest.*` codes and these release codes:
+Every error and warning has a stable `code`, `severity`, `message`, `evidence`, and `rule`. `path` is present when the finding belongs to one release-relative path. `rule` records the official source URL and the date on which the rule was last checked. Human output renders the same records.
+
+Errors use the manifest validator's `manifest.*` codes and these release codes:
 
 - `release.manifest.missing`
 - `release.manifest.invalid_json`
@@ -101,7 +126,32 @@ Every error and warning has a stable `code`, a `message`, and an optional releas
 - `release.html.missing`
 - `release.entrypoint.missing`
 - `release.dev_tools.enabled`
-- `release.network_reference.detected` (warning)
+- `release.name.too_long`
+- `release.name.too_many_words`
+- `release.keywords.too_many`
+- `release.symlink.detected`
+- `release.development_artifact.detected`
+- `release.sensitive_file.detected`
+- `release.nested_archive.detected`
+
+Name and keyword limits are checked because those values exist in `manifest.json`. Description limits are not guessed: the current framework configuration has no store-description input to validate.
+
+Warnings use these codes:
+
+- `release.network_reference.detected`
+- `release.local_network_reference.detected`
+- `release.unencrypted_http.detected`
+- `release.binary.detected`
+- `release.dependency_directory.detected`
+- `release.system_command.detected`
+- `release.destructive_operation.detected`
+- `release.remote_code.detected`
+- `release.elevated_permission.detected`
+- `release.disclosure_candidate.detected`
+
+Behavior warnings are evidence-bearing static signals, not a safety verdict. Network evidence reports only the protocol, host, and port; it does not print credentials, query parameters, or fragments.
+
+The framework's initial release-directory contract deliberately rejects symbolic links and nested archives even though Eagle's review criteria can allow them with sufficient context. Supported templates do not need either form, so their presence is treated as unintended release content. Native binaries and context-dependent behavior remain warnings.
 
 The manual checklist uses `manual.functionality`, `manual.visual_assets`, `manual.cancellation_and_data_safety`, `manual.author_understanding`, and `manual.fresh_install`.
 
