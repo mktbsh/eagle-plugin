@@ -1,11 +1,35 @@
 :root {
-  color: #1f2937;
+  color-scheme: light dark;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted-text: #374151;
+  --accent: #1d4ed8;
+  --accent-hover: #1e40af;
+  --accent-text: #ffffff;
   font-family: system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1f2937;
+    --text: #f9fafb;
+    --muted-text: #d1d5db;
+    --accent: #60a5fa;
+    --accent-hover: #93c5fd;
+    --accent-text: #111827;
+  }
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
   padding: 2rem;
+  background: var(--surface);
+  color: var(--text);
 }
 
 main {
@@ -18,16 +42,20 @@ p {
   margin: 0;
 }
 
+p {
+  color: var(--muted-text);
+}
+
 button {
   justify-self: start;
   border: 0;
   border-radius: 0.5rem;
-  background: #2563eb;
-  color: #fff;
+  background: var(--accent);
+  color: var(--accent-text);
   cursor: pointer;
   padding: 0.6rem 1rem;
 }
 
 button:hover {
-  background: #1d4ed8;
+  background: var(--accent-hover);
 }
