@@ -3,6 +3,9 @@ packages:
   - plugins/**
   - examples/**
 
+allowBuilds:
+  esbuild: true
+
 catalog:
   typescript: "7.0.2"
 

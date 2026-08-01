@@ -17,6 +17,9 @@
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "format": "biome format --write",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "changeset": "changeset",
     "release:status": "changeset status",
     "release:version": "changeset version",
@@ -26,7 +29,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.5",
     "@changesets/cli": "2.31.1",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitepress": "1.6.4"
   },
   "version": ""
 }

@@ -28,4 +28,4 @@ blocked_by:
 
 ## Manual verification
 
-`/Applications/Eagle.app` の `CFBundleShortVersionString` が `4.0.0` であること、固定の [`examples/skeleton`](../../../examples/skeleton) が Eagle の `Plugin > Import Local Project` で読み込めること、Window module の変更がEagle上でHMR反映されることを確認済み。
+`/Applications/Eagle.app` の `CFBundleShortVersionString` が `4.0.0` であること、固定の [`examples/skeleton`](https://github.com/mktbsh/eagle-plugin/tree/main/examples/skeleton) が Eagle の `Plugin > Import Local Project` で読み込めること、Window module の変更がEagle上でHMR反映されることを確認済み。
