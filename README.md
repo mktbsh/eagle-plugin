@@ -32,6 +32,13 @@ pnpm lint:fix
 pnpm format
 ```
 
+## Manual example
+
+[`examples/skeleton`](./examples/skeleton) is a tracked Vanilla TypeScript
+Window project for manually verifying the Eagle 4 development loop. It uses
+the workspace packages directly, so it does not depend on a published package
+version.
+
 ## Contributing
 
 Pull requests are welcome.

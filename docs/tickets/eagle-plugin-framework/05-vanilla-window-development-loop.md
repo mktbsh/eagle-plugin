@@ -28,4 +28,4 @@ blocked_by:
 
 ## Manual verification
 
-`/Applications/Eagle.app` の `CFBundleShortVersionString` が `4.0.0` であることは確認済み。生成プロジェクトで `pnpm dev` を実行し、表示された `.eagle-plugin-dev` directory を Eagle の `Plugin > Import Local Project` から読み込む。Window が表示され、`entrypoints/window.ts` の変更が反映されることを確認した後、この ticket を完了へ更新する。
+`/Applications/Eagle.app` の `CFBundleShortVersionString` が `4.0.0` であることは確認済み。固定の [`examples/skeleton`](../../../examples/skeleton) で `pnpm dev` を実行し、表示された `.eagle-plugin-dev` directory を Eagle の `Plugin > Import Local Project` から読み込む。Window が表示され、`entrypoints/window.ts` の変更が反映されることを確認した後、この ticket を完了へ更新する。
