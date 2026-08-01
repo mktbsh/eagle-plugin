@@ -1,6 +1,6 @@
 {
   "name": "eagle-plugin-manifest",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Runtime validation and JSON Schema for Eagle plugin manifests",
   "type": "module",
   "exports": {

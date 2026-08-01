@@ -8,6 +8,12 @@ Create a typed Eagle plugin project.
 pnpm create eagle-plugin
 ```
 
+The same generator can be run with npm after publication:
+
+```bash
+npx create-eagle-plugin my-plugin --topology window --template vanilla-ts
+```
+
 The interactive flow asks for an output directory, plugin topology, and UI template. The first supported combination is a Vanilla TypeScript Window plugin.
 
 For CI or another non-interactive environment, pass every selection explicitly.

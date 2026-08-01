@@ -1,6 +1,6 @@
 {
   "name": "eagle-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Framework and command-line tools for Eagle plugin development",
   "type": "module",
   "bin": {

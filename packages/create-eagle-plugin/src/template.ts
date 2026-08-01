@@ -35,8 +35,8 @@ export function createVanillaWindowProject(
           },
           devDependencies: {
             "@types/node": "26.1.1",
-            "eagle-plugin": "0.0.1",
-            "eagle-plugin-dts": "0.0.1",
+            "eagle-plugin": "0.1.0",
+            "eagle-plugin-dts": "0.1.0",
             typescript: "7.0.2",
           },
           engines: {

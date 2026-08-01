@@ -1,6 +1,6 @@
 {
   "name": "create-eagle-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Create a typed Eagle plugin project",
   "type": "module",
   "bin": {
