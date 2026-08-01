@@ -55,10 +55,6 @@ export default defineConfig({
               text: "Framework specification",
               link: "/specs/0001-eagle-plugin-framework",
             },
-            {
-              text: "Generator selection contract",
-              link: "/specs/0002-create-eagle-plugin-topology-selection",
-            },
           ],
         },
       ],
@@ -67,10 +63,6 @@ export default defineConfig({
           text: "Specifications",
           items: [
             { text: "Framework", link: "/specs/0001-eagle-plugin-framework" },
-            {
-              text: "Generator selection",
-              link: "/specs/0002-create-eagle-plugin-topology-selection",
-            },
           ],
         },
       ],

@@ -11,5 +11,4 @@ The framework keeps authored facts, derived release artifacts, and side effects 
 ## Read the decisions
 
 - [Framework specification](/specs/0001-eagle-plugin-framework)
-- [Generator selection contract](/specs/0002-create-eagle-plugin-topology-selection)
 - [Architecture decision records](/adr/0001-generate-manifest-from-typed-config)

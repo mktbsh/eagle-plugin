@@ -18,4 +18,4 @@ The first public release established a reliable Vanilla TypeScript Window workfl
 4. Inspector-only and combined format groups.
 5. Four-topology consumer and Eagle acceptance matrix.
 
-See the [framework specification](/specs/0001-eagle-plugin-framework) and [generator selection contract](/specs/0002-create-eagle-plugin-topology-selection) for the detailed boundaries.
+See the [framework specification](/specs/0001-eagle-plugin-framework) for the current detailed boundaries.
