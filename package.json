@@ -22,13 +22,7 @@
     "release:version": "changeset version",
     "release:publish": "changeset publish"
   },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "11.18.0",
-      "onFail": "download"
-    }
-  },
+  "packageManager": "pnpm@11.18.0",
   "devDependencies": {
     "@biomejs/biome": "2.5.5",
     "@changesets/cli": "2.31.1",
