@@ -20,7 +20,7 @@ manifest の実行時検証、TypeScript 型、JSON Schema は `eagle-plugin-man
 
 Vanilla Window は `pnpm create eagle-plugin` で生成し、`eagle build` で production build できる。
 
-`eagle dev` のローカル bridge、watch 更新、reload 案内は自動検証済みである。次の作業へ進む前に、Eagle 4.0.0 の「Plugin > Import Local Project」で基本接続を確認する。
+`eagle dev` のローカル bridge、watch 更新、reload 案内は自動検証済みであり、Eagle 4.0.0 の「Plugin > Import Local Project」による基本接続とVanilla WindowのHMRも確認済みである。次はReact Window（Ticket 6）へ進める。
 
 ## Plugin Author interface
 
@@ -115,13 +115,13 @@ Vanilla Window の最小版では、manifest、HTML、compiled entrypoint、logo
 
 入れ子のアーカイブと symbolic link は Eagle が常に拒否するという意味ではなく、初期 template が必要としないため framework 固有の release directory contract で禁止する。
 
-### 5. `eagle dev`（自動検証完了・Eagle 4.0 実機確認待ち）
+### 5. `eagle dev`（Eagle 4.0 実機確認済み）
 
 開発サーバーに、production build と同じ manifest 検証、設定解決、entrypoint 解析を組み込む。
 
 `eagle dev` と `eagle build` は同じ設定解決と entrypoint 解析を使い、開発時と production build の解釈を一致させる。
 
-`eagle dev` は開発用プラグインディレクトリにローカル HTML bridge を生成し、そこから Vite 開発サーバーへ接続する。Plugin Author はこのディレクトリを Eagle へ一度読み込み、UI は HMR、非 UI entrypoint と設定変更は watch build と明示的な再読み込みで反映する。
+`eagle dev` は開発用プラグインディレクトリにローカル HTML bridge を生成し、そこから Vite 開発サーバーへ接続する。Plugin Author はこのディレクトリを Eagle へ一度読み込み、Vanilla Windowのmodule変更がEagle 4.0上でHMR反映されることを確認済みである。非 UI entrypoint と設定変更は watch build と明示的な再読み込みで反映する。
 
 自動再読み込みのために Eagle の非公開 IPC は利用しない。HMR は Eagle 上の実機プロトタイプで成功した組み合わせだけを対応対象とする。
 

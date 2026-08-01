@@ -1,8 +1,8 @@
 ---
 title: 05 — Vanilla Window の開発ループを通す
-status: needs-manual-verification
+status: complete
 date: 2026-08-01T03:20:41+09:00
-updated: 2026-08-01T04:30:28+09:00
+updated: 2026-08-01T20:03:54+09:00
 agent: Codex (GPT-5)
 spec: 0001-eagle-plugin-framework
 blocked_by:
@@ -24,8 +24,8 @@ blocked_by:
 - [x] private Eagle IPC を呼び出さない。
 - [x] server startup failure、port failure、invalid project が actionable diagnostic と nonzero exit になる。
 - [x] automated test が bridge、manifest、server connection、watch update、reload guidance を外部から検証する。
-- [ ] Eagle 4.0 で local project を読み込み、Window 表示と基本的な更新を手動確認する。
+- [x] Eagle 4.0 で local project を読み込み、Window 表示と基本的な更新を手動確認する。
 
 ## Manual verification
 
-`/Applications/Eagle.app` の `CFBundleShortVersionString` が `4.0.0` であることは確認済み。固定の [`examples/skeleton`](../../../examples/skeleton) で `pnpm dev` を実行し、表示された `.eagle-plugin-dev` directory を Eagle の `Plugin > Import Local Project` から読み込む。Window が表示され、`entrypoints/window.ts` の変更が反映されることを確認した後、この ticket を完了へ更新する。
+`/Applications/Eagle.app` の `CFBundleShortVersionString` が `4.0.0` であること、固定の [`examples/skeleton`](../../../examples/skeleton) が Eagle の `Plugin > Import Local Project` で読み込めること、Window module の変更がEagle上でHMR反映されることを確認済み。
