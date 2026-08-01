@@ -26,7 +26,11 @@ declare namespace Eagle {
   interface PluginAPI extends EventAPI {
     readonly item: ItemAPI;
     readonly folder: FolderAPI;
-    readonly smartFolder: SmartFolderAPI;
+    /**
+     * Smart Folder API availability depends on the Eagle runtime version/build.
+     * Check this property before using it.
+     */
+    readonly smartFolder?: SmartFolderAPI;
     readonly tag: TagAPI;
     readonly tagGroup: TagGroupAPI;
     readonly library: LibraryAPI;

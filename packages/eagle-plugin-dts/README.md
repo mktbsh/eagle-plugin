@@ -147,7 +147,7 @@ The package covers all modules in the official core Eagle Plugin API reference:
 - `eagle.app`
 - `eagle.item`
 - `eagle.folder`
-- `eagle.smartFolder`
+- `eagle.smartFolder` (optional; check runtime availability)
 - `eagle.tag`
 - `eagle.tagGroup`
 - `eagle.library`

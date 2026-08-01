@@ -76,36 +76,39 @@ async function exerciseLibraryAPI() {
   await folder.save();
   await folder.open();
 
-  const nameRule = eagle.smartFolder.rule("name").contain("cat");
-  const widthRule = eagle.smartFolder.rule("width")[">"]([1920]);
-  const directRule = new eagle.smartFolder.Rule("type", "equal", "png");
-  const condition = eagle.smartFolder.Condition.create("AND", [
-    nameRule,
-    widthRule,
-    directRule,
-  ]);
-  const smartFolder = await eagle.smartFolder.create({
-    name: "Large PNGs",
-    conditions: [condition],
-    iconColor: eagle.smartFolder.IconColor.Blue,
-  });
-  await eagle.smartFolder.create({
-    name: "Raw condition",
-    conditions: [
-      {
-        match: "AND",
-        rules: [{ property: "name", method: "contain", value: "cat" }],
-      },
-    ],
-  });
-  await eagle.smartFolder.get({ id: smartFolder.id });
-  await eagle.smartFolder.getAll();
-  await eagle.smartFolder.getById(smartFolder.id);
-  await eagle.smartFolder.getByIds([smartFolder.id]);
-  await eagle.smartFolder.getRules();
-  await smartFolder.getItems({ orderBy: "name", fields: ["id", "name"] });
-  await smartFolder.save();
-  await eagle.smartFolder.remove(smartFolder.id);
+  const smartFolderAPI = eagle.smartFolder;
+  if (smartFolderAPI !== undefined) {
+    const nameRule = smartFolderAPI.rule("name").contain("cat");
+    const widthRule = smartFolderAPI.rule("width")[">"]([1920]);
+    const directRule = new smartFolderAPI.Rule("type", "equal", "png");
+    const condition = smartFolderAPI.Condition.create("AND", [
+      nameRule,
+      widthRule,
+      directRule,
+    ]);
+    const smartFolder = await smartFolderAPI.create({
+      name: "Large PNGs",
+      conditions: [condition],
+      iconColor: smartFolderAPI.IconColor.Blue,
+    });
+    await smartFolderAPI.create({
+      name: "Raw condition",
+      conditions: [
+        {
+          match: "AND",
+          rules: [{ property: "name", method: "contain", value: "cat" }],
+        },
+      ],
+    });
+    await smartFolderAPI.get({ id: smartFolder.id });
+    await smartFolderAPI.getAll();
+    await smartFolderAPI.getById(smartFolder.id);
+    await smartFolderAPI.getByIds([smartFolder.id]);
+    await smartFolderAPI.getRules();
+    await smartFolder.getItems({ orderBy: "name", fields: ["id", "name"] });
+    await smartFolder.save();
+    await smartFolderAPI.remove(smartFolder.id);
+  }
 
   const tags = await eagle.tag.get({ name: "design" });
   await eagle.tag.getRecentTags();

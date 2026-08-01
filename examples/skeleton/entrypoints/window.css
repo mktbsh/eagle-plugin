@@ -64,6 +64,12 @@ button:hover {
   background: var(--accent-hover);
 }
 
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .panel {
   display: grid;
   gap: 0.75rem;
