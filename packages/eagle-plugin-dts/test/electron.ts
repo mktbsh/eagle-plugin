@@ -1,26 +1,32 @@
 /// <reference types="../eagle-plugin" />
 import type * as Electron from "electron";
 
-const displayLike: Eagle.DisplayLike = {
-  id: 1,
-  bounds: { x: 0, y: 0, width: 1920, height: 1080 },
-  workArea: { x: 0, y: 0, width: 1920, height: 1040 },
-  size: { width: 1920, height: 1080 },
-  workAreaSize: { width: 1920, height: 1040 },
-  scaleFactor: 1,
-  rotation: 0,
-  touchSupport: "unknown",
-  accelerometerSupport: "unknown",
-  colorDepth: 24,
-  colorSpace: "srgb",
-  depthPerComponent: 8,
-  detected: true,
-  displayFrequency: 60,
-  internal: false,
-  label: "Display 1",
-  maximumCursorSize: { width: 64, height: 64 },
-  monochrome: false,
-  nativeOrigin: { x: 0, y: 0 },
-};
+declare const electronDisplay: Electron.Display;
+declare const electronImage: Electron.NativeImage;
 
-const _display: Electron.Display = displayLike;
+const _display: Eagle.Display = electronDisplay;
+const _image: Eagle.NativeImage = electronImage;
+
+const eagleRectangle: Eagle.Rectangle = {
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 100,
+};
+const _electronRectangle: Electron.Rectangle = eagleRectangle;
+
+const eagleOpenDialogOptions: Eagle.ShowOpenDialogOptions = {
+  title: "Open image",
+  filters: [{ name: "Images", extensions: ["png", "jpg"] }],
+  properties: ["openFile", "multiSelections"],
+};
+const _electronOpenDialogOptions: Electron.OpenDialogOptions =
+  eagleOpenDialogOptions;
+
+const eagleMenuItem: Eagle.ContextMenuItem = {
+  id: "edit",
+  label: "Edit",
+  click: () => {},
+  submenu: [{ id: "crop", label: "Crop" }],
+};
+const _electronMenuItem: Electron.MenuItemConstructorOptions = eagleMenuItem;

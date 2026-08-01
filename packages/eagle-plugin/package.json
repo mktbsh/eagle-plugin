@@ -1,0 +1,57 @@
+{
+  "name": "eagle-plugin",
+  "version": "0.1.0",
+  "description": "Framework and command-line tools for Eagle plugin development",
+  "type": "module",
+  "bin": {
+    "eagle": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "pnpm run build && node --test tests/*.test.mjs && pnpm run typecheck:test",
+    "typecheck:test": "tsc --noEmit -p tsconfig.test.json",
+    "pack:dry": "pnpm pack --dry-run",
+    "prepack": "pnpm run build"
+  },
+  "dependencies": {
+    "eagle-plugin-manifest": "workspace:*",
+    "vite": "8.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "keywords": [
+    "eagle-app",
+    "eagle-plugin",
+    "vite",
+    "typescript",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mktbsh/eagle-plugin.git",
+    "directory": "packages/eagle-plugin"
+  },
+  "author": {
+    "name": "mktbsh",
+    "url": "https://github.com/mktbsh"
+  },
+  "license": "MIT"
+}

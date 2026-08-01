@@ -8,5 +8,5 @@
     "skipLibCheck": false,
     "types": ["node"]
   },
-  "include": ["eagle-plugin.d.ts", "test/**/*.ts"]
+  "include": ["eagle-plugin.d.ts", "types/**/*.d.ts", "test/**/*.ts"]
 }

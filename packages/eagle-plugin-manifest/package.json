@@ -1,0 +1,49 @@
+{
+  "name": "eagle-plugin-manifest",
+  "version": "0.1.0",
+  "description": "Runtime validation and JSON Schema for Eagle plugin manifests",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "pnpm run build && node --test tests/*.test.mjs && pnpm run typecheck:test",
+    "typecheck:test": "tsc --noEmit -p tsconfig.test.json",
+    "pack:dry": "pnpm pack --dry-run",
+    "prepack": "pnpm run build"
+  },
+  "dependencies": {
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "keywords": [
+    "eagle-app",
+    "eagle-plugin",
+    "manifest",
+    "json-schema",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mktbsh/eagle-plugin.git",
+    "directory": "packages/eagle-plugin-manifest"
+  },
+  "author": {
+    "name": "mktbsh",
+    "url": "https://github.com/mktbsh"
+  },
+  "license": "MIT"
+}

@@ -1,22 +1,27 @@
 {
   "name": "eagle-plugin-dts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "types": "./eagle-plugin.d.ts",
   "files": [
     "eagle-plugin.d.ts",
+    "types",
     "README.md",
     "LICENSE",
     "package.json"
   ],
   "scripts": {
     "test": "pnpm run typecheck",
+    "pretypecheck": "pnpm --filter eagle-plugin-manifest build",
     "typecheck": "tsc --noEmit",
     "pack:dry": "pnpm pack --dry-run"
   },
+  "dependencies": {
+    "eagle-plugin-manifest": "workspace:*"
+  },
   "devDependencies": {
-    "@types/node": "^24.12.4",
-    "electron": "42.3.0",
+    "@types/node": "26.1.1",
+    "electron": "43.1.0",
     "typescript": "catalog:"
   },
   "peerDependencies": {

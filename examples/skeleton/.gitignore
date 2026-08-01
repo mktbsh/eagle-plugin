@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.eagle-plugin-dev/
+.eagle-plugin-dev-build/
+*.eagleplugin

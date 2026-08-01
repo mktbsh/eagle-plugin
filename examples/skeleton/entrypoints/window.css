@@ -1,0 +1,111 @@
+:root {
+  color-scheme: light dark;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted-text: #374151;
+  --panel-surface: #f3f4f6;
+  --panel-border: #d1d5db;
+  --accent: #1d4ed8;
+  --accent-hover: #1e40af;
+  --accent-text: #ffffff;
+  font-family: system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1f2937;
+    --text: #f9fafb;
+    --muted-text: #d1d5db;
+    --panel-surface: #374151;
+    --panel-border: #4b5563;
+    --accent: #60a5fa;
+    --accent-hover: #93c5fd;
+    --accent-text: #111827;
+  }
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+main {
+  display: grid;
+  gap: 0.75rem;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+p {
+  color: var(--muted-text);
+}
+
+button {
+  justify-self: start;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.panel {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 0.75rem;
+  background: var(--panel-surface);
+  padding: 1rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.api-output {
+  overflow-x: auto;
+  margin: 0;
+  border-top: 1px solid var(--panel-border);
+  padding-top: 0.75rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    0.875rem / 1.5 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.api-output code {
+  color: var(--text);
+}
+
+.api-output code:empty::before {
+  content: "No probe results";
+}
+
+.api-output code {
+  overflow-wrap: anywhere;
+}

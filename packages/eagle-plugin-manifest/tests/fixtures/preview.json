@@ -1,0 +1,21 @@
+{
+  "id": "LARSKLB8OTOC2",
+  "version": "1.0.0",
+  "platform": "all",
+  "arch": "all",
+  "name": "Preview Plugin",
+  "logo": "/logo.png",
+  "keywords": ["icns"],
+  "devTools": false,
+  "preview": {
+    "icns": {
+      "thumbnail": {
+        "path": "thumbnail/icns.js",
+        "size": 400
+      },
+      "viewer": {
+        "path": "viewer/icns.html"
+      }
+    }
+  }
+}

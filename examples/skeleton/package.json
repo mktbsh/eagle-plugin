@@ -1,0 +1,22 @@
+{
+  "name": "eagle-plugin-example-skeleton",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm run typecheck",
+    "dev": "eagle dev",
+    "build": "eagle build",
+    "check": "eagle check"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "eagle-plugin": "workspace:*",
+    "eagle-plugin-dts": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
