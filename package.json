@@ -21,12 +21,12 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.3.0",
+      "version": "11.18.0",
       "onFail": "download"
     }
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.3",
+    "@biomejs/biome": "2.5.5",
     "typescript": "catalog:"
   },
   "version": ""
